@@ -146,7 +146,10 @@ exports.registerUser = asyncHandler(async (req, res) => {
             message: "Password Do Not Match"
         })
     }
-
+    const result = await User.findOne({ email })
+    if (result) {
+        res.status(404).json({ message: "Email Already register With us" })
+    }
     const hash = await bcrypt.hash(password, 10)
 
     await User.create({ name, mobile, email, password: hash })
