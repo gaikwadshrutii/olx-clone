@@ -124,26 +124,26 @@ exports.registerUser = asyncHandler(async (req, res) => {
     }
     if (!validator.isEmail(email)) {
         return res.status(400).json
-            ({ message: "Invalid Email", error })
+            ({ message: "Invalid Email" })
     }
     if (!validator.isMobilePhone(mobile, "en-IN")) {
         return res.status(400).json({
-            message: "Invalid Mobile", error
+            message: "Invalid Mobile"
         })
     }
     if (!validator.isStrongPassword(password)) {
         return res.status(400).json({
-            message: "Provide Strong Password", error
+            message: "Provide Strong Password"
         })
     }
     if (!validator.isStrongPassword(cpassword)) {
         return res.status(400).json({
-            message: "Provide Strong Confirm Password Password", error
+            message: "Provide Strong Confirm Password Password"
         })
     }
     if (password !== cpassword) {
         return res.status(400).json({
-            message: "Password Do Not Match", error
+            message: "Password Do Not Match"
         })
     }
 

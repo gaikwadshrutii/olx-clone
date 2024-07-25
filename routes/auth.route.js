@@ -5,6 +5,7 @@ router
     .post("/login-admin", authController.loginAdmin)
     .post("/verify-admin-otp", authController.verifyOTP)
     .post("/logout-admin", authController.logoutAdmin)
+// user
 
     .post("/login-mobile-user", authController.loginUser)
     .post("/register-mobile-user", authController.registerUser)
