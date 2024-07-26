@@ -5,5 +5,6 @@ exports.verifyUserEmail = asyncHandler(async (req, res) => {
     const result = await User.findById(req.loggedInUser)
     const otp = Math.floor(10000 + Math.random() * 900000)
     await User.findByIdAndUpdate(req.loggedInUser, { emailCode: otp })
-    sendEmail({ to: result.email, subject: "Verify Email", message: otp })
+    sendEmail({ to: result.email, subject: "Verify Email", message: ` your OTP is ${otp}` })
+    res.json({ message: "User Email Verify Success" })
 })
