@@ -101,7 +101,8 @@ exports.verifyOTP = asyncHandler(async (req, res) => {
         message: "OTP Verify Success.", result: {
             _id: result._id,
             name: result.name,
-            email: result.email
+            email: result.email,
+
         }
     })
     //  JWT
@@ -181,7 +182,8 @@ exports.loginUser = asyncHandler(async (req, res) => {
             email: result.email,
             mobile: result.mobile,
             avatar: result.avatar,
-            verified: result.verified,
+            emailverified: result.emailverified,
+            mobileverified: result.mobileverified
 
         }
     })
