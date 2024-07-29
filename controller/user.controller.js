@@ -16,6 +16,10 @@ exports.verifyUserEmail = asyncHandler(async (req, res) => {
     })
     res.json({ message: "User Email Verify Success" })
 })
+exports.verifyUserMobile = asyncHandler(async (req, res) => {
+   
+    res.json({ message: "verification  Success" })
+})
 exports.verifyEmailOpt = asyncHandler(async (req, res) => {
     const { otp } = req.body
     const result = await User.findById(req.loggedInUser)

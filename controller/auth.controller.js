@@ -193,3 +193,4 @@ exports.logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie("user")
     res.json({ message: "User Logout Success" })
 })
+``
