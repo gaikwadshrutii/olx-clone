@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../model/User")
 const sendEmail = require("../utils/email")
+const { sendSMS } = require("../utils/sms")
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
     const result = await User.findById(req.loggedInUser)
     if (!result) {
@@ -17,8 +18,14 @@ exports.verifyUserEmail = asyncHandler(async (req, res) => {
     res.json({ message: "User Email Verify Success" })
 })
 exports.verifyUserMobile = asyncHandler(async (req, res) => {
-   
-    res.json({ message: "verification  Success" })
+    const result = await User.findById(req.loggedInUser)
+    const otp = Math.floor(100000 + Math.random() * 900000)
+    await User.findByIdAndUpdate(req.loggedInUser, { mobileCode: otp })
+    await sendSMS({
+        message: `your otp is ${otp}`,
+        numbers: `${result.mobile}`
+    })
+    res.json({ message: "verification  send Success" })
 })
 exports.verifyEmailOpt = asyncHandler(async (req, res) => {
     const { otp } = req.body
@@ -41,6 +48,18 @@ exports.verifyMobileOTP = asyncHandler(async (req, res) => {
     if (otp !== result.mobileCode) {
         return res.status(400).json({ message: "Invalid OTP" })
     }
-    await User.findByIdAndUpdate(req.loggedInUser, { mobileverified: true })
-    req.json({ message: "Mobile verify Success" })
+    const updateUser = await User.findByIdAndUpdate(
+        req.loggedInUser,
+        { mobileverified: true },
+        { new: true })
+    req.json({
+        message: "Mobile verify Success", result: {
+            _id: updateUser._id,
+            name: updateUser.name,
+            mobile: updateUser.mobile,
+            avatar: updateUser.avatar,
+            emailverified: updateUser.emailverified,
+            mobileverified: updateUser.mobileverified,
+        }
+    })
 })

@@ -1,14 +1,8 @@
 var unirest = require("unirest");
 
-const sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject => {
-    var req = unirest("GET", "https://www.fast2sms.com/dev/bulkV2");
-    req.query({
-        "authorization": "YOUR_API_KEY",
-        "message": "This is a test message",
-        "language": "english",
-        "route": "q",
-        "numbers": "9999999999,8888888888,7777777777",
-    });
+exports.sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject) => {
+    var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
+
 
     req.headers({
         "authorization": process.env.SMS_API_KEY
@@ -19,8 +13,6 @@ const sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject
         "route": "q",
         "numbers": numbers
     })
-
-
     req.end(function (res) {
         if (res.error) {
             console.log(res.error)
@@ -30,7 +22,7 @@ const sendSMS = ({ message = "", numbers = "" }) => new Promise((resolve, reject
         console.log(res.body)
         resolve(true)
     });
-}))
+})
 
 
 
