@@ -4,6 +4,8 @@ const sendEmail = require("../utils/email")
 const { sendSMS } = require("../utils/sms")
 const Posts = require("../model/Posts")
 const upload = require("../utils/upload")
+const cloudinay = require("../utils/cloudinary.config")
+const { post } = require("../routes/user.route")
 exports.verifyUserEmail = asyncHandler(async (req, res) => {
     const result = await User.findById(req.loggedInUser)
     if (!result) {
@@ -75,9 +77,18 @@ exports.addPost = asyncHandler(async (req, res) => {
             return res.status(400).json({ message: "All Fields Required", error })
         }
         console.log(req.files)
+        const images = []
+        for (const item of req.files) {
+            const { secure_url } = await cloudinay.uploader.upload(item.path)
+            images.push(secure_url)
+        }
 
         //  modify this code to support cloudnary
-        // await Posts.create({ title, desc, price, image, location, category, user: req.loggedInUser })
+        await Posts.create({ title, desc, price, images, location, category, user: req.loggedInUser })
         res.json({ message: "Post create success" })
     })
+})
+exports.getAllPosts = asyncHandler(async (req, res) => {
+    const result = await post.find()
+    res.json({ message: "post fetch success", result })
 })
